@@ -32,7 +32,7 @@ export default function Header() {
           </Link>
           <Link to='sing-in'>
             <li className='text-slate-700 hover:underline cursor-pointer'>
-              SingIn
+              Sing In
             </li>
           </Link>
         </ul>

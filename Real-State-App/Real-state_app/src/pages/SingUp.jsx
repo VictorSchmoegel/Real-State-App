@@ -76,7 +76,7 @@ export default function SingUp() {
       <div className='flex gap-2 mt-5'>
         <p>Have an account?</p>
         <Link to={"/sing-in"}>
-          <span className='text-blue-700'>Sing in</span>
+          <span className='text-blue-700'>Sing up</span>
         </Link>
       </div>
       {error && <p className="text-red-500 mt-3">{error}</p>}
