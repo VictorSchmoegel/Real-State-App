@@ -3,7 +3,14 @@ import { useRef, useState, useEffect } from "react"
 import imgtest from '../assets/images/profile.jpg'
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { app } from "../firebase";
-import { updateUserStart, updateUserSuccess, updateUserFailure } from "../redux/user/userSlice";
+import {
+  updateUserStart,
+  updateUserSuccess,
+  updateUserFailure,
+  userDeletedStart,
+  userDeletedSuccess,
+  userDeletedFailure,
+} from "../redux/user/userSlice";
 
 export default function Profile() {
   const { currentUser, loading, error } = useSelector(state => state.user)
@@ -42,8 +49,8 @@ export default function Profile() {
         console.log(error);
         setFileError(true);
       },
-       () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => 
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) =>
           setFormData({ ...formData, photo: downloadURL })
         );
       }
@@ -74,6 +81,24 @@ export default function Profile() {
       setUpdateSuccess(true);
     } catch (error) {
       dispatch(updateUserFailure(error.message));
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    try {
+      dispatch(userDeletedStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(userDeletedFailure(data.message));
+        return;
+      }
+      dispatch(userDeletedSuccess(data));
+      setUpdateSuccess(true);
+    } catch (error) {
+      dispatch(userDeletedFailure(error.message));
     }
   };
 
@@ -135,7 +160,11 @@ export default function Profile() {
         </button>
       </form>
       <div className='flex justify-between mt-3'>
-        <span className='text-red-700 cursor-pointer '>Delete Account</span>
+        <span
+          onClick={handleDeleteUser}
+          className='text-red-700 cursor-pointer '>
+          Delete Account
+        </span>
         <span className='text-red-700 cursor-pointer '>Sing Out</span>
       </div>
       <p className='text-red-700'>{error ? error : ''}</p>
