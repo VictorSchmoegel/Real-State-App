@@ -12,7 +12,6 @@ export default function Profile() {
   const [fileError, setFileError] = useState(false)
   const [formData, setFormData] = useState({})
 
-
   /* firebase storage
       allow read;
       allow write: if
