@@ -3,6 +3,7 @@ import { useRef, useState, useEffect } from "react"
 import imgtest from '../assets/images/profile.jpg'
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { app } from "../firebase";
+import { Link } from "react-router-dom";
 import {
   updateUserStart,
   updateUserSuccess,
@@ -122,6 +123,7 @@ export default function Profile() {
     }
   };
 
+
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
@@ -178,6 +180,12 @@ export default function Profile() {
         >
           {loading ? 'Loading...' : 'Update'}
         </button>
+        <Link
+          to={'/create-list'}
+          className="bg-green-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80 text-center"
+        >
+          {loading ? 'Loading...' : 'CreateList'}
+        </Link>
       </form>
       <div className='flex justify-between mt-3'>
         <span
