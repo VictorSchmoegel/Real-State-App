@@ -58,3 +58,12 @@ export const google = async (req, res, next) => {
     next(error);
   }
 };
+
+export const singout = (req, res) => {
+  try {
+    res.clearCookie("access_token");
+    res.status(200).json({ message: "User logged out" });
+  } catch (error) {
+    next(error);
+  }
+};
