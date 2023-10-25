@@ -10,6 +10,9 @@ import {
   userDeletedStart,
   userDeletedSuccess,
   userDeletedFailure,
+  userSingOutStart,
+  userSingOutSuccess,
+  userSingOutFailure,
 } from "../redux/user/userSlice";
 
 export default function Profile() {
@@ -20,6 +23,7 @@ export default function Profile() {
   const [fileError, setFileError] = useState(false)
   const [formData, setFormData] = useState({})
   const [updateSuccess, setUpdateSuccess] = useState(false)
+  const [singOut, setSingOut] = useState(false)
   const dispatch = useDispatch()
 
   /* firebase storage
@@ -102,6 +106,22 @@ export default function Profile() {
     }
   };
 
+  const handleSingOut = async () => {
+    try {
+      dispatch(userSingOutStart());
+      const res = await fetch('/api/auth/singout');
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(userSingOutFailure(data.message));
+        return;
+      }
+      dispatch(userSingOutSuccess(data));
+      setSingOut(true);
+    } catch (error) {
+      dispatch(userSingOutFailure(error.message));
+    }
+  };
+
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
@@ -162,13 +182,20 @@ export default function Profile() {
       <div className='flex justify-between mt-3'>
         <span
           onClick={handleDeleteUser}
-          className='text-red-700 cursor-pointer '>
+          className='text-red-700 cursor-pointer '
+        >
           Delete Account
         </span>
-        <span className='text-red-700 cursor-pointer '>Sing Out</span>
+        <span
+          onClick={handleSingOut}
+          className='text-red-700 cursor-pointer '
+        >
+          Sing Out
+        </span>
       </div>
       <p className='text-red-700'>{error ? error : ''}</p>
       <p className='text-green-700'>{updateSuccess ? 'Successfully updated!' : ''}</p>
+      <p className='text-green-700'>{singOut ? 'Successfully sing out!' : ''}</p>
     </div>
   )
 }
