@@ -1,4 +1,73 @@
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import { useState } from "react";
+import { app } from "../firebase";
+
 export default function CreateListing() {
+  const [files, setFiles] = useState([]);
+ const [loading, setLoading] = useState(false);
+  const [errorUpload, setErrorUpload] = useState(false);
+  const [formData, setFormData] = useState({
+    imagesUrls: [],
+  });
+  console.log(formData);
+  
+  const handleImgSubmit = () => {
+    if (files.length > 0 && files.length + formData.imagesUrls.length < 7) {
+      setLoading(true);
+      setErrorUpload(false);
+      const promisesImg = []
+
+      for (let i = 0; i < files.length; i += 1) {
+        promisesImg.push(storeImage(files[i]));
+      }
+
+      Promise.all(promisesImg).then((values) => {
+        setFormData({ ...formData, imagesUrls: formData.imagesUrls.concat(values) });
+        setErrorUpload(false);
+        setLoading(false);
+      }).catch(() => {
+        setErrorUpload('Image upload failed');
+        setLoading(false);
+      });
+    } else {
+      setErrorUpload('You can only upload 6 images');
+      setLoading(false);
+    }
+  };
+
+  const handleRemoveImg = (index) => {
+    const newImages = formData.imagesUrls.filter((_, i) => i !== index);
+    setFormData({
+      ...formData,
+      imagesUrls: newImages,
+    })
+  };
+
+  const storeImage = async (file) => {
+    return new Promise((resolve, reject) => {
+      const storage = getStorage(app);
+      const fileName = new Date().getTime() + file.name
+      const storageRef = ref(storage, fileName);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(`upload is ${progress}% done`);
+        },
+        (error)=> {
+          console.log(error);
+          reject(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            resolve(downloadURL);
+          });
+        }
+      )
+    });
+  }
+
   return (
     <main className='p-3 max-w-4xl mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>
@@ -150,18 +219,41 @@ export default function CreateListing() {
               accept='image/*'
               multiple
               className='p-3 border border-gray-300 rounded w-full'
+              onChange={(e) => setFiles(e.target.files)}
             />
             <button
+              disabled={loading}
               className='p-3 text-green-700 border border-green-700 rouded uppercase hover:shadow-lg disabled:opacity-80'
+              type='button'
+              onClick={handleImgSubmit}
             >
-              Upload
+              {loading ? 'Loading...' : 'Upload'}
             </button>
           </div>
+            <p className='text-red-700 self-center'>{errorUpload && errorUpload}</p>
+            {
+              formData.imagesUrls.length > 0 && formData.imagesUrls.map((url, index) => (
+                <div key={url} className='flex justify-between p-3 border items-center'>
+                  <img
+                    src={url}
+                    alt='img'
+                    className='w-24 h-24 object-cover rounded-lg'
+                  />
+                  <button
+                    type='button'
+                    onClick={() => handleRemoveImg(index)}
+                    className='p-3 text-red-700 rounded-lg uppercase hover:opacity-75'
+                  >
+                    Delete
+                  </button>
+                </div>
+              ))
+            }
           <button
-          className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80 mt-5'
-        >
-          Create List
-        </button>
+            className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80 mt-5'
+          >
+            Create List
+          </button>
         </div>
       </form>
     </main>
