@@ -8,6 +8,7 @@ import { FaBath, FaBed, FaChair, FaMapMarkerAlt, FaParking, FaShare } from "reac
 import { useSelector } from "react-redux";
 import Contact from "../components/Contact";
 
+
 export default function Listing() {
   SwiperCore.use([Navigation]);
   const [listing, setListing] = useState(null);
@@ -40,7 +41,6 @@ export default function Listing() {
     };
     fetchListing();
   }, [parametro.listingId]);
-  console.log(listing)
 
   return (
     <main>

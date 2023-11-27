@@ -26,7 +26,6 @@ export default function CreateListing() {
     offer: false,
     type: 'rent',
   });
-  console.log(formData);
 
   const handleImgSubmit = (e) => {
     e.preventDefault();
