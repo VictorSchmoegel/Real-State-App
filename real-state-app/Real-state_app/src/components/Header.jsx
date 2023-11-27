@@ -37,7 +37,7 @@ export default function Header() {
         </Link>
         <form onSubmit={handleSubmit} className="bg-slate-100 p-3 rounded-lg flex items-center">
           <input
-            type="search"
+            type="text"
             placeholder="Search..."
             className="bg-transparent focus:outline-none placeholder-slate-500 text-slate-700 w-24 sm:w-64"
             value={search}
