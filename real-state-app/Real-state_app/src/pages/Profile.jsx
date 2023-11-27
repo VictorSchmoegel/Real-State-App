@@ -234,12 +234,12 @@ export default function Profile() {
           onClick={handleSingOut}
           className='text-red-700 cursor-pointer '
         >
-          Sing Out
+          Sign Out
         </span>
       </div>
       <p className='text-red-700'>{error ? error : ''}</p>
       <p className='text-green-700'>{updateSuccess ? 'Successfully updated!' : ''}</p>
-      <p className='text-green-700'>{singOut ? 'Successfully sing out!' : ''}</p>
+      <p className='text-green-700'>{singOut ? 'Successfully sign out!' : ''}</p>
       <button
         onClick={handleShowListings}
         className="text-green-700 cursor-pointer w-full text-center"
