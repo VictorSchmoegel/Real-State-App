@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 export default function Header() {
   const [search, setSearch] = useState('');
-
+  
   const { currentUser } = useSelector(state => state.user);
   const navigate = useNavigate();
 
@@ -15,7 +15,6 @@ export default function Header() {
     urlParams.set('search', search);
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
-    console.log(search)
   }
 
   useEffect(() => {
