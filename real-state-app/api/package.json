@@ -2,11 +2,11 @@
   "name": "mern-estate",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.mjs",
   "type": "module",
   "scripts": {
-    "dev": "nodemon api/index.cjs",
-    "start": "node api/index.cjs",
+    "dev": "nodemon api/index.mjs",
+    "start": "node api/index.mjs",
     "build": "npm install && npm install --prefix client && npm run build --prefix client"
   },
   "keywords": [],
