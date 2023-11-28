@@ -116,7 +116,7 @@ export default function Search() {
     navigate(`/search?${searchQuery}`);
   };
 
-  const onShowMoreClick = async () => {
+  const handleShowMore = async () => {
     const numberOfListings = listings.length;
     const startIndex = numberOfListings;
     const urlParams = new URLSearchParams(location.search);
@@ -253,7 +253,7 @@ export default function Search() {
 
           {showMore && (
             <button
-              onClick={onShowMoreClick}
+              onClick={handleShowMore}
               className='text-green-700 hover:underline p-7 text-center w-full'
             >
               Show more
