@@ -15,11 +15,6 @@ mongoose.connect(process.env.MONGO).then(() => {
   console.log(`${err} MongoDB Connection Error!!}`);
 });
 
-app.use(cors({
-  origin: ['real-state-app-nu.vercel.app'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,
-}));
 
 const __dirname = path.resolve();
 
@@ -32,6 +27,12 @@ app.use(cookieParser());
 app.listen(3000, () => {
   console.log('Server is running on port 3000!!');
 });
+
+app.use(cors({
+  origin: ['real-state-app-nu.vercel.app'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+}));
 
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
