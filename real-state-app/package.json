@@ -4,6 +4,9 @@
   "description": "Fullstack MERN real state application",
   "main": "index.js",
   "type": "module",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "dev": "nodemon api/index.js",
     "start": "node api/index.js",
