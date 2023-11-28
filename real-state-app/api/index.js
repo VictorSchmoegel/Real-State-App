@@ -16,7 +16,7 @@ mongoose.connect(process.env.MONGO).then(() => {
 });
 
 app.use(cors({
-  origin: ['https://real-state-app-kappa.vercel.app/'],
+  origin: ['real-state-app-nu.vercel.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 }));
