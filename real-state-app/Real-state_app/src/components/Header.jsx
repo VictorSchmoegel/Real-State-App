@@ -1,31 +1,32 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { FaSearch } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
 export default function Header() {
-  const [search, setSearch] = useState('');
-
   const { currentUser } = useSelector(state => state.user);
   const navigate = useNavigate();
+  
+  const [searchTerm, setSearchTerm] = useState('');
+  
 
   const handleSubmit = (e) => {
     e.preventDefault()
     const urlParams = new URLSearchParams(window.location.search);
-    urlParams.set('search', search);
+    urlParams.set('searchTerm', searchTerm);
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
-    console.log(search)
   }
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
-    const searchFromUrl = urlParams.get('search');
+    const searchFromUrl = urlParams.get('searchTerm');
     if (searchFromUrl) {
-      setSearch(searchFromUrl);
+      setSearchTerm(searchFromUrl);
     }
 
-  }, [location.search])
+  }, [location.search]);
 
   return (
     <header className="bg-slate-200 shadow-md">
@@ -38,11 +39,11 @@ export default function Header() {
         </Link>
         <form onSubmit={handleSubmit} className="bg-slate-100 p-3 rounded-lg flex items-center">
           <input
-            type="search"
+            type="text"
             placeholder="Search..."
             className="bg-transparent focus:outline-none placeholder-slate-500 text-slate-700 w-24 sm:w-64"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
           />
           <button>
             <FaSearch className='text-slate-600' />
